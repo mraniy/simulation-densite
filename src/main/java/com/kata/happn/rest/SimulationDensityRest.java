@@ -16,7 +16,7 @@ public class SimulationDensityRest {
     public List<Zone> retrieveDensestZones(/*@RequestParam("file") MultipartFile file, */ String numberOfZones) {
         // call file reader interface and retrieve the list of points
         // for each point determine the zone that belongs to the point
-        // send this list of zones to the calculator that will calculate the density of each zone and sort it by densiest zones
+        // send this list of zones to the calculator that will process the density of each zone and sort it by densiest zones
         // return the first {{number of zones}} in the list
         return null;
     }
