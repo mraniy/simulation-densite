@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @Component
 public class DensityCalculator {
 
-    public Map<Zone, Long> process(List<Zone> zoneList) {
-        Map<Zone, Long> zoneAndDensity = Optional.ofNullable(zoneList)
+    public List<Zone> process(List<Zone> zoneList,Long limit) {
+        return Optional.ofNullable(zoneList)
                 .filter(zones -> !CollectionUtils.isEmpty(zones))
                 .map(zones ->
                         zoneList.stream()
@@ -23,7 +23,9 @@ public class DensityCalculator {
                 .entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-        return zoneAndDensity;
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new)) .keySet()
+                .stream()
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 }

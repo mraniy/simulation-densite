@@ -1,49 +1,33 @@
 package com.kata.happn.rest;
 
-import com.kata.happn.model.Point;
 import com.kata.happn.model.Zone;
-import com.kata.happn.service.DensityCalculator;
-import com.kata.happn.service.FileTransformer;
-import com.kata.happn.service.ZoneCalculator;
+import com.kata.happn.service.DensityFacade;
+import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class SimulationDensityRest {
 
-    @Autowired
-    FileTransformer fileTransformer;
+    private DensityFacade densityFacade;
 
     @Autowired
-    DensityCalculator densityCalculator;
+    public SimulationDensityRest(DensityFacade densityFacade) {
+        this.densityFacade = densityFacade;
+    }
 
-    @Autowired
-    ZoneCalculator zoneCalculator;
-
-    @GetMapping("/densiest")
-    public List<Zone> getUserById(String limit){
-        // call file reader interface and retrieve the list of points
-        List<Point> points = fileTransformer.readtsvFile("/static/data.tsv");
-        // for each point determine the zone that belongs to the point
-        List<Zone> zones = points.stream()
-                .map(zoneCalculator::calculateZoneBelongingToPoint)
-                .collect(Collectors.toList());
-        // send this list of zones to the calculator that will process the density of each zone and sort it by densiest zones
-        Map<Zone, Long> zoneAndDensity = densityCalculator.process(zones);
-        // return the first {{number of zones}} in the list
-        return zoneAndDensity.keySet()
-                .stream()
-                .limit(Long.valueOf(2))
-                .collect(Collectors.toList());
+    @RequestMapping(value = "/densiest/{limit}" , method = RequestMethod.GET)
+    public ResponseEntity<List<Zone>> getDensiestZonesFromTsvFile(@PathVariable("limit") String limit){
+        return Try.of(() -> densityFacade.getDensiestZones("/static/data.tsv",limit))
+                .map(zones -> ResponseEntity.ok().body(zones))
+                .getOrElseGet(throwable -> new ResponseEntity(throwable.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 

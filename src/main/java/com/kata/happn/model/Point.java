@@ -7,9 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class Point {
 
-    private String id;
+    private final String id;
 
-    private Float latitude;
+    private final Float latitude;
 
-    private Float longitude;
+    private final Float longitude;
 }

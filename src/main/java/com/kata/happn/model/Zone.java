@@ -8,8 +8,17 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 public class Zone {
-    private Float minLatitude;
-    private Float maxLatitude;
-    private Float minLongitude;
-    private Float maxLongitude;
+    private final Float minLatitude;
+    private final Float maxLatitude;
+    private final Float minLongitude;
+    private final Float maxLongitude;
+
+
+
+    public Zone(Zone zone) {
+        this.minLatitude = zone.getMinLatitude();
+        this.maxLatitude = zone.getMaxLatitude();
+        this.minLongitude = zone.getMinLongitude();
+        this.maxLongitude = zone.getMaxLongitude();
+    }
 }

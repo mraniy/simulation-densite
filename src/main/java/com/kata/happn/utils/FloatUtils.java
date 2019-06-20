@@ -3,7 +3,11 @@ package com.kata.happn.utils;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import static com.kata.happn.Constants.INCREMENTZONES;
+
 public class FloatUtils {
+
+
 
     public static Float retrieveMinLimit(Float number) {
         String strNumber = String.valueOf(number);
@@ -15,7 +19,7 @@ public class FloatUtils {
                 || (Integer.valueOf(numberAfterComma) < 5 && number > 0))
             return Float.valueOf(format);
         else
-            return Float.valueOf(format) - 0.5F;
+            return Float.valueOf(format) - INCREMENTZONES;
     }
 
     public static Float retrieveMaxLimit(Float number) {
@@ -26,7 +30,7 @@ public class FloatUtils {
         String format = df.format(Double.valueOf(number));
         if (Integer.valueOf(numberAfterComma) >= 5 && number < 0
                 || (Integer.valueOf(numberAfterComma) < 5 && number > 0))
-            return Float.valueOf(format) + 0.5F;
+            return Float.valueOf(format) + INCREMENTZONES;
 
         else
             return Float.valueOf(format);

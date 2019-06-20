@@ -3,23 +3,25 @@ package com.kata.happn.service;
 
 import com.kata.happn.model.Point;
 import com.kata.happn.model.Zone;
-import com.kata.happn.utils.FloatUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+import static com.kata.happn.Constants.POINTNOTACCORDING;
 import static com.kata.happn.utils.FloatUtils.retrieveMaxLimit;
 import static com.kata.happn.utils.FloatUtils.retrieveMinLimit;
 
 @Component
 public class ZoneCalculator {
 
+
+
     public Zone calculateZoneBelongingToPoint(Point point) throws IllegalArgumentException {
 
         return Optional.ofNullable(point)
                 .filter(this::isPointCorrect)
                 .map(this::getZone)
-                .orElseThrow(() -> new IllegalArgumentException("the point you are trying to determine the zone is not according"));
+                .orElseThrow(() -> new IllegalArgumentException(POINTNOTACCORDING));
 
     }
 
