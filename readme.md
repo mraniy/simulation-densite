@@ -1,4 +1,6 @@
-L’algorithme du projet est le suivant :
+- Pour faire appel à l'endpoint du test , veuillez démarrer le projet sringboot, et appeler l'url : http://localhost:8080/densiest/{N zones les plus denses}
+
+L’algorithme du test est le suivant :
 - Lire les points qui sont stockés dans le fichier TSV (static/data.tsv).
 - Pour chaque point , déterminer la zone à laquelle il appartient, en résulte un ensemble de zones.
 - Ensuite la densité  correspondant à chaque zone est calculée (en utilisant les fonctionnalités d’agrégation de java 8 , le count) ,  une Map<Zone,Densite> est retournée
